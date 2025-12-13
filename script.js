@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
             this.x = Math.random() * width;
             this.y = Math.random() * height;
             this.size = Math.random() * 8 + 8; // Size 8px to 16px to be visible as flakes
-            this.speed = Math.random() * 1 + 0.5;
+            this.speed = Math.random() * 0.5 + 0.25;
             this.opacity = Math.random() * 0.3 + 0.6; // High opacity (0.6-0.9) to shine through overlay
             this.rotation = Math.random() * 360;
             this.spin = (Math.random() - 0.5) * 2; // Random spin direction and speed
@@ -67,7 +67,60 @@ document.addEventListener('DOMContentLoaded', () => {
         canvas.width = width;
         canvas.height = height;
     });
+
+    // Modal Logic
+    const modal = document.getElementById('confirmation-modal');
+    const checkbox = document.getElementById('agree-checkbox');
+    const proceedBtn = document.getElementById('modal-proceed');
+    const closeX = document.getElementById('modal-close-x');
+    let currentLink = null; // To store the link of the clicked button
+
+    // Open modal on Buy button click
+    document.querySelectorAll('.btn-buy').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            // In a real scenario, you'd get the link from the button, e.g., btn.dataset.link
+            // currentLink = btn.dataset.link; 
+            modal.classList.remove('hidden');
+        });
+    });
+
+    // Close modal function
+    function closeModal() {
+        modal.classList.add('hidden');
+        checkbox.checked = false;
+        proceedBtn.disabled = true;
+    }
+
+    // Close on X click
+    closeX.addEventListener('click', closeModal);
+
+    // Checkbox toggle
+    checkbox.addEventListener('change', () => {
+        proceedBtn.disabled = !checkbox.checked;
+    });
+
+    // Proceed action
+    proceedBtn.addEventListener('click', () => {
+        if (checkbox.checked) {
+            // Here you would redirect to the stored link
+            // if (currentLink) window.location.href = currentLink;
+
+            alert('Переход к оплате...'); // Placeholder for now
+            closeModal();
+        }
+    });
+
+    // Close on click outside
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
 });
+
+
+
 
 function toggleDetails(button) {
     const details = button.nextElementSibling;
